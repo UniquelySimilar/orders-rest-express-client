@@ -1,10 +1,8 @@
 <template>
   <div id="app" class="container-fluid">
-    <div class="row">
-      <header>
+    <div class="row" id="title">
         <span>Customer Orders Client Application for Express REST Service</span>
-        <button class="btn btn-light btn-sm btn-margin-right float-right" v-on:click="logout">Log Out</button>
-      </header>
+        <button class="btn btn-light btn-sm" v-on:click="logout">Log Out</button>
     </div>
     <router-view/>
   </div>
@@ -27,13 +25,23 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  header {
+  /*header {*/
+  #title {
     background-color: lightgrey;
     font-size: 1.5em;
     font-weight: bold;
     padding-left: 15px;
     margin-bottom: 15px;
-    width: 100%;
+    /*width: 100%;*/
+  }
+
+  #title span {
+    padding: 5px 0;
+  }
+
+  #title button {
+    margin-left: auto;
+    margin-right: 1em;
   }
 
   .component-heading {
