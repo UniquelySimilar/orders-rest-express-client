@@ -2,7 +2,9 @@
   <div id="app" class="container-fluid">
     <div class="row" id="title">
         <span>Customer Orders Client Application for Express REST Service</span>
+        <!--
         <button class="btn btn-light btn-sm" v-on:click="logout">Log Out</button>
+        -->
     </div>
     <router-view/>
   </div>

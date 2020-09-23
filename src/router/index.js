@@ -14,6 +14,13 @@ const routes = [
     name: 'customerIndex',
     component: CustomerIndex
   },
+  {
+    path: '/customers/:customerId',
+    name: 'customerDetailOrders',
+    // route level code-splitting (see documentation)
+    component: () => import('../views/customer/CustomerDetailOrders.vue'),
+    props: true
+  },
   // TODO: Update placeholder routes
   {
     path: '/customers',
@@ -27,7 +34,12 @@ const routes = [
   },
   {
     path: '/customers',
-    name: 'customerDetailOrders',
+    name: 'orderCreate',
+    component: CustomerIndex
+  },
+  {
+    path: '/customers',
+    name: 'orderEdit',
     component: CustomerIndex
   },
 
