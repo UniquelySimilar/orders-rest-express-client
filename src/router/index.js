@@ -7,11 +7,27 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: { name: 'customer-index' }
+    redirect: { name: 'customerIndex' }
   },
   {
     path: '/customers',
-    name: 'customer-index',
+    name: 'customerIndex',
+    component: CustomerIndex
+  },
+  // TODO: Update placeholder routes
+  {
+    path: '/customers',
+    name: 'customerCreate',
+    component: CustomerIndex
+  },
+  {
+    path: '/customers',
+    name: 'customerEdit',
+    component: CustomerIndex
+  },
+  {
+    path: '/customers',
+    name: 'customerDetailOrders',
     component: CustomerIndex
   },
 
