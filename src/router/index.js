@@ -21,17 +21,18 @@ const routes = [
     component: () => import('../views/customer/CustomerDetailOrders.vue'),
     props: true
   },
-  // TODO: Update placeholder routes
   {
-    path: '/customers',
+    path: '/customers/create',
     name: 'customerCreate',
-    component: CustomerIndex
+    component: () => import('../views/customer/CustomerCreateOrEdit.vue')
   },
   {
-    path: '/customers',
+    path: '/customers/:customerId/edit',
     name: 'customerEdit',
-    component: CustomerIndex
+    component: () => import('../views/customer/CustomerCreateOrEdit.vue'),
+    props: true
   },
+  // TODO: Update placeholder routes
   {
     path: '/customers',
     name: 'orderCreate',
