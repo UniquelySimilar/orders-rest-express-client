@@ -8,7 +8,7 @@
       <div class="form-group row">
         <label for="firstName" class="col-md-offset-2 col-md-2 col-form-label">First Name</label>
         <div class="col-md-4">
-          <input type="input" class="form-control" id="firstName" v-model="customer.firstName">
+          <input type="input" class="form-control" id="firstName" v-model="customer.first_name">
         </div>
         <div class="col-md-4 error-msg">
           <span>*&nbsp;</span>
@@ -18,7 +18,7 @@
       <div class="form-group row">
         <label for="lastName" class="col-md-offset-2 col-md-2 col-form-label">Last Name</label>
         <div class="col-md-4">
-          <input type="input" class="form-control" id="lastName" v-model="customer.lastName">
+          <input type="input" class="form-control" id="lastName" v-model="customer.last_name">
         </div>
         <div class="col-md-4 error-msg">
           <span>*&nbsp;</span>
@@ -71,7 +71,7 @@
               <label for="home-phone" class="col-md-offset-2 col-md-2 col-form-label">Home Phone</label>
               <div class="col-md-4">
                   <digits-input component-class="form-control" component-id="home-phone"
-                    :num-digits="10" :initial-value="customer.homePhone" v-on:updatePhone="updateHomePhone"/>
+                    :num-digits="10" :initial-value="customer.home_phone" v-on:updatePhone="updateHomePhone"/>
               </div>
               <div class="col-md-4 error-msg">
                   <span>*&nbsp;</span>
@@ -82,7 +82,7 @@
               <label for="work-phone" class="col-md-offset-2 col-md-2 col-form-label">Work Phone</label>
               <div class="col-md-4">
                   <digits-input component-class="form-control" component-id="work-phone"
-                    :num-digits="10" :initial-value="customer.workPhone" v-on:updatePhone="updateWorkPhone"/>
+                    :num-digits="10" :initial-value="customer.work_phone" v-on:updatePhone="updateWorkPhone"/>
               </div>
               <div class="col-md-4 error-msg">
                   <span>*&nbsp;</span>
@@ -137,14 +137,14 @@
           return {
               customer: {
                   id: undefined,
-                  firstName: '',
-                  lastName: '',
+                  first_name: '',
+                  last_name: '',
                   street: '',
                   city: '',
                   state: 'Colorado',
                   zipcode: '',
-                  homePhone: '',
-                  workPhone: '',
+                  home_phone: '',
+                  work_phone: '',
                   email: ''
               },
               validationErrors: [],
