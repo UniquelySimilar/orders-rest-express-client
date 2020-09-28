@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-4 error-msg">
           <span>*&nbsp;</span>
-          <span>{{ getValidationError('firstName') }}</span>
+          <span>{{ getValidationError('first_name') }}</span>
         </div>
       </div>
       <div class="form-group row">
@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-4 error-msg">
           <span>*&nbsp;</span>
-          <span>{{ getValidationError('lastName') }}</span>
+          <span>{{ getValidationError('last_name') }}</span>
         </div>
       </div>
       <div class="form-group row">
@@ -52,10 +52,6 @@
                       <option v-for="state in stateList" v-bind:key="state">{{state}}</option>
                   </select>
               </div>
-              <div class="col-md-4 error-msg">
-                  <span>*&nbsp;</span>
-                  <span>{{ getValidationError('state') }}</span>
-              </div>
           </div>
           <div class="form-group row">
               <label for="zipcode" class="col-md-offset-2 col-md-2 col-form-label">Zipcode</label>
@@ -75,7 +71,7 @@
               </div>
               <div class="col-md-4 error-msg">
                   <span>*&nbsp;</span>
-                  <span>{{ getValidationError('homePhone') }}</span>
+                  <span>{{ getValidationError('home_phone') }}</span>
               </div>
           </div>
           <div class="form-group row">
@@ -86,7 +82,7 @@
               </div>
               <div class="col-md-4 error-msg">
                   <span>*&nbsp;</span>
-                  <span>{{ getValidationError('workPhone') }}</span>
+                  <span>{{ getValidationError('work_phone') }}</span>
               </div>
           </div>
           <div class="form-group row">
@@ -170,21 +166,18 @@
           },
       },
       methods: {
-          // TODO: Analyze validation error handling
           getValidationError(fieldName) {
-              var returnValue;
+                var returnValue;
 
-              if (Array.isArray(this.validationErrors)) {
                 var foundElement = this.validationErrors.find(function (element) {
-                  return element.field === fieldName;
+                    return element.param === fieldName;
                 });
 
                 if (foundElement !== undefined) {
-                    returnValue = foundElement.message;
+                    returnValue = foundElement.msg;
                 }
-              }
 
-              return returnValue;
+                return returnValue;
           },
           submitForm() {
             axios({
@@ -200,11 +193,12 @@
                 if (error.response) {
                     // The request was made and the server responded with a status code that falls out of the range of 2xx
                     if (error.response.status == 400) {
-                        // Validation error
-                        //console.log('validation error');
-                        this.validationErrors = error.response.data;
-                        // TEMPORARY
-                        if (!Array.isArray(this.validationErrors)) {
+                        // Validation errors
+                        if (error.response.data.errors) {    // Property containing array of error objects
+                            this.validationErrors = error.response.data.errors;
+                            console.log(this.validationErrors);
+                        }
+                        else {  // Single error message from server
                             this.error400message = error.response.data;
                             console.log(this.error400message);
                         }
@@ -226,10 +220,10 @@
             });
           },
           updateHomePhone(newValue) {
-              this.customer.homePhone = newValue;
+              this.customer.home_phone = newValue;
           },
           updateWorkPhone(newValue) {
-              this.customer.workPhone = newValue;
+              this.customer.work_phone = newValue;
           }
       },
       // Lifecycle hooks
@@ -238,13 +232,12 @@
               axios.get('customers/' + this.customerId)
               .then(response => {
                   this.customer = response.data;
-                  //console.log(JSON.stringify(this.customer));
               })
               .catch(error => {
                   processAjaxAuthError(error, this.$router);
               });
           }
-      }
+      },
   }
 </script>
 
