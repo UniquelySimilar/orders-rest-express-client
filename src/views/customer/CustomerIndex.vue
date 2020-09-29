@@ -225,11 +225,7 @@
         this.deleteModal = false;
         let id = this.deleteCustomerId;
 
-        axios.delete('/customer/' + id, {
-          headers: {
-            'Authorization': 'Bearer ' + this.token
-          }
-        })
+        axios.delete('/customers/' + id)
         .then( () => {
           // Remove the related customer object from the customers array
           this.customers = this.unfilteredCustomers.filter(customer => {
