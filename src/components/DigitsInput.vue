@@ -28,6 +28,8 @@
                 required: false
             }
         },
+        // This watch added so that this child input value would be updated after API call
+        // and customer data update in parent
         watch: {
             parentValue(newValue) {
                 this.inputNumber = newValue;

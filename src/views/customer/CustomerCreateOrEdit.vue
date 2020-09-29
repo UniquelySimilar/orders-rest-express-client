@@ -183,7 +183,7 @@
           submitForm() {
             axios({
                 method: this.customerId ? 'put' : 'post',
-                url: '/customers',
+                url: this.customer.id ? '/customers/' + this.customerId : '/customers',
                 data: this.customer,
             })
             .then(() => {
