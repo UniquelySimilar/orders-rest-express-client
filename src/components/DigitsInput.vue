@@ -1,12 +1,12 @@
 <template>
-    <input type="text" :id="componentId" :class="componentClass" v-model="inputNumber" v-on:input="filterDigits" />
+    <input type="text" :id="componentId" :class="componentClass" v-bind:value="inputNumber" v-on:input="filterDigits" />
 </template>
 
 <script>
     export default {
         data() {
             return {
-                inputNumber: this.initialValue,
+                inputNumber: '',
                 previousValue: '',
             }
         },
@@ -15,7 +15,7 @@
                 type: Number,
                 required: true
             },
-            initialValue: {
+            parentValue: {
                 type: String,
                 required: true
             },
@@ -28,13 +28,22 @@
                 required: false
             }
         },
+        watch: {
+            parentValue(newValue) {
+                this.inputNumber = newValue;
+            }
+        },
         methods: {
             filterDigits(event) {
                 // NOTE: This 'event' is and instance of 'InputEvent'
                 let newValue = event.target.value;
                 let isNum = /^\d+$/.test(newValue);
                 if (newValue.length > this.numDigits) {
-                    event.preventDefault();
+                    // Prevent default is not keeping extra characters from being displayed in input
+                    // so trigger reactivity by adding and removing space
+                    this.inputNumber += ' ';
+                    // Had to use '=' to trigger reactivity
+                    this.inputNumber = this.inputNumber.trim();
                 }
                 else if (isNum) {
                     this.inputNumber = newValue;
@@ -47,7 +56,10 @@
                         this.previousValue = '';
                     }
                     this.inputNumber = this.previousValue;
-                    event.preventDefault();
+                    // Trigger reactivity in case numbers were already the same (see comment above)
+                    this.inputNumber += ' ';
+                    this.inputNumber = this.inputNumber.trim();
+
                     this.$emit('updatePhone', this.inputNumber);
                 }
             }

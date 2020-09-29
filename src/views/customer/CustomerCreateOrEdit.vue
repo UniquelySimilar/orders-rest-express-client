@@ -67,7 +67,7 @@
               <label for="home-phone" class="col-md-offset-2 col-md-2 col-form-label">Home Phone</label>
               <div class="col-md-4">
                   <digits-input component-class="form-control" component-id="home-phone"
-                    :num-digits="10" :initial-value="customer.home_phone" v-on:updatePhone="updateHomePhone"/>
+                    :num-digits="10" :parent-value="customer.home_phone" v-on:updatePhone="updateHomePhone"/>
               </div>
               <div class="col-md-4 error-msg">
                   <span>*&nbsp;</span>
@@ -78,7 +78,7 @@
               <label for="work-phone" class="col-md-offset-2 col-md-2 col-form-label">Work Phone</label>
               <div class="col-md-4">
                   <digits-input component-class="form-control" component-id="work-phone"
-                    :num-digits="10" :initial-value="customer.work_phone" v-on:updatePhone="updateWorkPhone"/>
+                    :num-digits="10" :parent-value="customer.work_phone" v-on:updatePhone="updateWorkPhone"/>
               </div>
               <div class="col-md-4 error-msg">
                   <span>*&nbsp;</span>
@@ -179,6 +179,7 @@
 
                 return returnValue;
           },
+          // TODO: Fix update functionality
           submitForm() {
             axios({
                 method: this.customerId ? 'put' : 'post',
