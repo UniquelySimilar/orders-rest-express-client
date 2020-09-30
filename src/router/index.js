@@ -5,6 +5,7 @@ import CustomerIndex from '../views/customer/CustomerIndex.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  // Customers
   {
     path: '/',
     redirect: { name: 'customerIndex' }
@@ -32,17 +33,19 @@ const routes = [
     component: () => import('../views/customer/CustomerCreateOrEdit.vue'),
     props: true
   },
-  // TODO: Update placeholder routes
+  // Orders
   {
-    path: '/customers',
+    path: '/customers/:customerId/orders/create',
     name: 'orderCreate',
-    component: CustomerIndex
+    component: () => import('../views/order/OrderCreateOrEdit.vue'),
+    props: true
   },
   {
-    path: '/customers',
+    path: '/customers/:customerId/orders/:orderId/edit',
     name: 'orderEdit',
-    component: CustomerIndex
-  },
+    component: () => import('../views/order/OrderCreateOrEdit.vue'),
+    props: true
+  }
 
 ]
 

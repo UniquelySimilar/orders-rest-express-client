@@ -93,11 +93,6 @@
               return customer.city + ", " + customer.state + " " + customer.zipcode;
           }
       },
-      computed: {
-          token() {
-              return this.$store.state.token;
-          }
-      },
       // Lifecycle hooks
       created() {
         // TODO: Implement API in Express server
