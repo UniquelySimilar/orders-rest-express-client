@@ -2,59 +2,59 @@
     <div id="order-create-edit">
         <span class="component-heading">{{ pageHeading }}</span>
         <hr>
-        <form class="form-horizontal">
-            <div class="form-group">
-                <label for="orderStatus" class="col-md-offset-2 col-md-2">Status</label>
+        <form>
+            <div class="form-group row">
+                <label for="orderStatus" class="col-md-offset-2 col-md-2 col-form-label">Status</label>
                 <div class="col-md-4">
-                    <select id="orderStatus" v-model="order.orderStatus">
+                    <select id="orderStatus" v-model="order.order_status">
                         <option v-for="status in orderStatusList" v-bind:value="status.value" v-bind:key="status.value">{{status.text}}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="orderDate" class="col-md-offset-2 col-md-2">Order Date</label>
+            <div class="form-group row">
+                <label for="orderDate" class="col-md-offset-2 col-md-2 col-form-label">Order Date</label>
                 <div class="col-md-2">
-                    <datepicker id="orderDate" :dateFormat="dateFormat" :dateType="1" :initialDate="order.orderDate"
+                    <datepicker id="orderDate" :dateFormat="dateFormat" :dateType="1" :initialDate="order.order_date"
                      v-on:update-date="updateDate"></datepicker>
                 </div>
                 <div class="col-md-4 error-msg">
                     <span>*&nbsp;</span>
-                    <span>{{ getValidationError('orderDate') }}</span>
+                    <span>{{ getValidationError('order_date') }}</span>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="requiredDate" class="col-md-offset-2 col-md-2">Required Date</label>
+            <div class="form-group row">
+                <label for="requiredDate" class="col-md-offset-2 col-md-2 col-form-label">Required Date</label>
                 <div class="col-md-2">
-                    <datepicker id="requiredDate" :dateFormat="dateFormat" :dateType="2" :initialDate="order.requiredDate"
+                    <datepicker id="requiredDate" :dateFormat="dateFormat" :dateType="2" :initialDate="order.required_date"
                      v-on:update-date="updateDate"></datepicker>
                 </div>
                 <div class="col-md-4 error-msg">
                     <span>*&nbsp;</span>
-                    <span>{{ getValidationError('requiredDate') }}</span>
+                    <span>{{ getValidationError('required_date') }}</span>
                 </div>
             </div>
 
             <!-- Only display Shipped Date on edit form-->
-            <div class="form-group" v-if="orderId">
-                <label for="shippedDate" class="col-md-offset-2 col-md-2">Shipped Date</label>
+            <div class="form-group row" v-if="orderId">
+                <label for="shippedDate" class="col-md-offset-2 col-md-2 col-form-label">Shipped Date</label>
                 <div class="col-md-3">
-                    <datepicker id="shippedDate" :dateFormat="dateFormat" :dateType="3" :initialDate="order.shippedDate"
+                    <datepicker id="shippedDate" :dateFormat="dateFormat" :dateType="3" :initialDate="order.shipped_date"
                      v-on:update-date="updateDate"></datepicker>
                      <button type="button" class="btn btn-default btn-xs btn-margin-left" @click="clearShippedDate">Clear</button>
                 </div>
                 <div class="col-md-4 error-msg">
                     <span>*&nbsp;</span>
-                    <span>{{ getValidationError('shippedDate') }}</span>
+                    <span>{{ getValidationError('shipped_date') }}</span>
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group row">
                 <div class="col-md-offset-4 col-md-2">
-                    <button type="button" class="btn btn-default"
+                    <button type="button" class="btn btn-outline-dark"
                         v-on:click="submitForm">{{ submitBtnLabel }}</button>
-                    <router-link class="btn btn-default" :to="{ name: 'customerDetailOrders', params: { id: customerId } }">Cancel</router-link>
+                    <router-link class="btn btn-outline-dark" :to="{ name: 'customerDetailOrders', params: { id: customerId } }">Cancel</router-link>
                 </div>
             </div>
         </form>
@@ -84,11 +84,11 @@
             return {
                 order: {
                     id: this.orderId,
-                    customerId: this.customerId,
-                    orderStatus: 1,
-                    orderDate: new Date(),
-                    requiredDate: null,
-                    shippedDate: null
+                    customer_id: this.customerId,
+                    order_status: 1,
+                    order_date: this.getCurrentDateISOString(),
+                    required_date: this.getCurrentDateISOString(),
+                    shipped_date: null
                 },
                 orderStatusList: [
                     { text: "Pending", value: "1" },
@@ -119,15 +119,20 @@
             }
         },
         methods: {
+            getCurrentDateISOString() {
+                let currentDate = new Date().toISOString().substring(0,10);
+                //console.log('current date: ' + currentDate);
+                return currentDate;
+            },
             getValidationError(fieldName) {
-                var returnValue;
+                let returnValue;
 
-                var foundElement = this.validationErrors.find(function (element) {
-                    return element.field === fieldName;
+                let foundElement = this.validationErrors.find(function (element) {
+                    return element.param === fieldName;
                 });
 
                 if (foundElement !== undefined) {
-                    returnValue = foundElement.message;
+                    returnValue = foundElement.msg;
                 }
 
                 return returnValue;
@@ -136,16 +141,17 @@
                 //console.log("updateDate payload.dtValue: " + payload.dtValue);
                 switch(payload.dtType) {
                     case 1:
-                        this.order.orderDate = new Date(payload.dtValue + this.timeZoneSuffix);
-                        //console.log("New orderDate: " + this.order.orderDate);
+                        //this.order.order_date = new Date(payload.dtValue + this.timeZoneSuffix);
+                        this.order.order_date = payload.dtValue;
+                        //console.log("New order_date: " + this.order.order_date);
                         break;
                     case 2:
-                        this.order.requiredDate = new Date(payload.dtValue + this.timeZoneSuffix);
-                        //console.log("New requiredDate: " + this.order.requiredDate);
+                        this.order.required_date = payload.dtValue;
+                        //console.log("New required_date: " + this.order.required_date);
                         break;
                     case 3:
-                        this.order.shippedDate = new Date(payload.dtValue + this.timeZoneSuffix);
-                        //console.log("New shippedDate: " + this.order.shippedDate);
+                        this.order.shipped_date = payload.dtValue;
+                        //console.log("New shipped_date: " + this.order.shipped_date);
                         break;
                     default:
                         console.log("ERROR: Unrecognized date type: " + payload.dtType);
@@ -157,8 +163,8 @@
             submitForm() {
                 axios({
                     method: this.orderId ? 'put' : 'post',
-                    url: '/orders',
-                    data: JSON.stringify(this.order),
+                    url: this.orderId ? '/orders/' + this.orderId : '/orders',
+                    data: this.order,
                 })
                 .then(() => {
                     // Redirect back to CustomerDetailOrders view
@@ -166,10 +172,16 @@
                 })
                 .catch(error => {
                     if (error.response) {
-                        // The request was made and the server responded with a status code that falls out of the range of 2xx
                         if (error.response.status == 400) {
-                            // Validation error
-                            this.validationErrors = error.response.data;
+                            // Validation errors
+                            if (error.response.data.errors) {    // Property containing array of error objects
+                                this.validationErrors = error.response.data.errors;
+                                console.log(this.validationErrors);
+                            }
+                            else {  // Single error message from server
+                                this.error400message = error.response.data;
+                                console.log(this.error400message);
+                            }
                         }
                         else if (error.response.status == 401) {
                             console.log("401 error so redirect to login");
@@ -190,25 +202,23 @@
         // Lifecycle hooks
         created() {
             if (this.orderId) {
-                axios.get('/orders/' + this.orderId, {
-                    headers: {
-                        'Authorization': 'Bearer ' + this.token
-                    }
-                })
+                axios.get('/orders/' + this.orderId)
                 .then( response => {
                     //console.log(response.data);
                     this.order = response.data;
                     // Change dates from milliseconds to format Datepicker can use
-                    this.order.orderDate = new Date(this.order.orderDate);
+                    //console.log('orderDate from api: ' + this.order.orderDate )
+                    this.order.order_date = new Date(this.order.order_date);
+                    //console.log('orderDate after conversion: ' + this.order.orderDate )
                     //console.log("Retrieved order orderDate: " + this.order.orderDate);
-                    this.order.requiredDate = new Date(this.order.requiredDate);
+                    this.order.required_date = new Date(this.order.required_date);
                     //console.log("Retrieved order requiredDate: " + this.order.requiredDate);
-                    if (this.order.shippedDate) {   // NOT null from database/web service
-                        this.order.shippedDate = new Date(this.order.shippedDate);
+                    if (this.order.shipped_date) {   // NOT null from database/web service
+                        this.order.shipped_date = new Date(this.order.shipped_date);
                         //console.log("Retrieved order shippedDate: " + this.order.shippedDate);
                     }
                     else {
-                        this.order.shippedDate = null;
+                        this.order.shipped_date = null;
                     }
                 })
                 .catch( error => {
@@ -220,4 +230,7 @@
 </script>
 
 <style scoped>
+  label {
+      text-align: right;
+  }
 </style>

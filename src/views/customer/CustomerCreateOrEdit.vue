@@ -145,7 +145,6 @@
               },
               validationErrors: [],
               stateList: stateList,
-              // TEMPORARY until validation implemented
               error400message: ''
           }
       },
@@ -167,9 +166,9 @@
       },
       methods: {
           getValidationError(fieldName) {
-                var returnValue;
+                let returnValue;
 
-                var foundElement = this.validationErrors.find(function (element) {
+                let foundElement = this.validationErrors.find(function (element) {
                     return element.param === fieldName;
                 });
 
@@ -179,7 +178,6 @@
 
                 return returnValue;
           },
-          // TODO: Fix update functionality
           submitForm() {
             axios({
                 method: this.customerId ? 'put' : 'post',
