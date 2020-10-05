@@ -42,7 +42,7 @@
                 <div class="col-md-3">
                     <datepicker id="shippedDate" :dateFormat="dateFormat" :dateType="3" :initialDate="order.shipped_date"
                      v-on:update-date="updateDate"></datepicker>
-                     <button type="button" class="btn btn-default btn-xs btn-margin-left" @click="clearShippedDate">Clear</button>
+                     <button type="button" class="btn btn-outline-dark btn-xs btn-margin-left" @click="clearShippedDate">Clear</button>
                 </div>
                 <div class="col-md-4 error-msg">
                     <span>*&nbsp;</span>
@@ -50,6 +50,13 @@
                 </div>
             </div>
 
+            <div class="form-group row" v-if="error400message">
+                <label for="email" class="col-md-offset-2 col-md-2 col-form-label">Error Message</label>
+                <div class="col-md-4 error-msg">
+                    <span>{{ error400message }}</span>
+                </div>
+            </div>
+    
             <div class="form-group row">
                 <div class="col-md-offset-4 col-md-2">
                     <button type="button" class="btn btn-outline-dark"
@@ -97,6 +104,7 @@
                     { text: "Completed", value: "4" },
                 ],
                 validationErrors: [],
+                error400message: '',
                 dateFormat: "yy-mm-dd",
                 // Hard code to noon Mountain Time for testing
                 timeZoneSuffix: "T12:00:00-06:00",
@@ -158,7 +166,7 @@
                 }
             },
             clearShippedDate() {
-                this.order.shippedDate = null;
+                this.order.shipped_date = null;
             },
             submitForm() {
                 axios({
@@ -204,18 +212,11 @@
             if (this.orderId) {
                 axios.get('/orders/' + this.orderId)
                 .then( response => {
-                    //console.log(response.data);
                     this.order = response.data;
-                    // Change dates from milliseconds to format Datepicker can use
-                    //console.log('orderDate from api: ' + this.order.orderDate )
-                    this.order.order_date = new Date(this.order.order_date);
-                    //console.log('orderDate after conversion: ' + this.order.orderDate )
-                    //console.log("Retrieved order orderDate: " + this.order.orderDate);
-                    this.order.required_date = new Date(this.order.required_date);
-                    //console.log("Retrieved order requiredDate: " + this.order.requiredDate);
+                    this.order.order_date = this.order.order_date.substring(0,10);
+                    this.order.required_date = this.order.required_date.substring(0,10);
                     if (this.order.shipped_date) {   // NOT null from database/web service
-                        this.order.shipped_date = new Date(this.order.shipped_date);
-                        //console.log("Retrieved order shippedDate: " + this.order.shippedDate);
+                        this.order.shipped_date = this.order.shipped_date.substring(0,10);
                     }
                     else {
                         this.order.shipped_date = null;
