@@ -94,7 +94,11 @@
                   return;
               }
 
-              axios.delete('/orders/' + id)
+              axios.delete('/orders/' + id, {
+                  headers: {
+                      'Authorization': 'Bearer ' + this.token
+                  }
+              })
               .then( () => {
                   // Remove order from orders array
                   this.orders = this.orders.filter( order => {

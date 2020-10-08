@@ -111,6 +111,9 @@
             }
         },
         computed: {
+            token() {
+                return this.$store.state.token
+            },
             pageHeading() {
                 let heading = "New Order";
                 if (this.orderId) {
@@ -173,6 +176,9 @@
                     method: this.orderId ? 'put' : 'post',
                     url: this.orderId ? '/orders/' + this.orderId : '/orders',
                     data: this.order,
+                    headers: {
+                        'Authorization': 'Bearer ' + this.token
+                    }
                 })
                 .then(() => {
                     // Redirect back to CustomerDetailOrders view
@@ -210,7 +216,11 @@
         // Lifecycle hooks
         created() {
             if (this.orderId) {
-                axios.get('/orders/' + this.orderId)
+                axios.get('/orders/' + this.orderId, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.token
+                    }
+                })
                 .then( response => {
                     this.order = response.data;
                     this.order.order_date = this.order.order_date.substring(0,10);

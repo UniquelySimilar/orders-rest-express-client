@@ -37,7 +37,7 @@ const processAjaxLoginError = function(error) {
 const processAjaxAuthError = function(error, router) {
     if (error.response) {
         if (error.response.status == 401) {
-            console.log("401 error so redirect to login");
+            //console.log("401 error so redirect to login");
             router.push("/login");
         }
         else {

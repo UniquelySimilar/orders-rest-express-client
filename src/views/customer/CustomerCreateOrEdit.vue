@@ -149,6 +149,9 @@
           }
       },
       computed: {
+          token() {
+              return this.$store.state.token
+          },
           pageHeading() {
               let heading = "New Customer"
               if (this.customerId) {
@@ -183,6 +186,9 @@
                 method: this.customerId ? 'put' : 'post',
                 url: this.customer.id ? '/customers/' + this.customerId : '/customers',
                 data: this.customer,
+                headers: {
+                    'Authorization': 'Bearer ' + this.token
+                }
             })
             .then(() => {
                 // Redirect back to Index view
@@ -203,7 +209,7 @@
                         }
                     }
                     else if (error.response.status == 401) {
-                        console.log("401 error so redirect to login");
+                        //console.log("401 error so redirect to login");
                         this.$router.push("/login");
                     }
                     else {
@@ -228,7 +234,11 @@
       // Lifecycle hooks
       created() {
           if (this.customerId) {
-              axios.get('customers/' + this.customerId)
+              axios.get('customers/' + this.customerId, {
+                    headers: {
+                        'Authorization': 'Bearer ' + this.token
+                    }
+              })
               .then(response => {
                   this.customer = response.data;
               })

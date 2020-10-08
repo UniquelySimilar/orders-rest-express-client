@@ -128,7 +128,11 @@
     methods: {
       getCustomers() {
         this.filterTerm = '';
-        axios.get('/customers')
+        axios.get('/customers', {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        })
         .then(response => {
           this.customers = response.data;
           // Initialize sort to lastName ascending
@@ -167,19 +171,19 @@
         }
       },
       compareLastNamesAsc(a, b) {
-        if (a.last_name < b.last_name) {
+        if (a.last_name.toLowerCase() < b.last_name.toLowerCase()) {
           return -1;
         }
-        if (a.last_name > b.last_name) {
+        if (a.last_name.toLowerCase() > b.last_name.toLowerCase()) {
           return 1;
         }
         return 0;
       },
       compareLastNamesDesc(a, b) {
-        if (a.last_name > b.last_name) {
+        if (a.last_name.toLowerCase() > b.last_name.toLowerCase()) {
           return -1;
         }
-        if (a.last_name < b.last_name) {
+        if (a.last_name.toLowerCase() < b.last_name.toLowerCase()) {
           return 1;
         }
         return 0;
@@ -225,7 +229,11 @@
         this.deleteModal = false;
         let id = this.deleteCustomerId;
 
-        axios.delete('/customers/' + id)
+        axios.delete('/customers/' + id, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        })
         .then( () => {
           // Remove the related customer object from the customers array
           this.customers = this.unfilteredCustomers.filter(customer => {

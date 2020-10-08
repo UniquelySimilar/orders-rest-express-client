@@ -14,7 +14,7 @@
       <div class="form-group row">
         <label for="password" class="offset-md-2 col-md-2 col-form-label">Last Name</label>
         <div class="col-md-3">
-          <input type="password" class="form-control" id="password" v-model="password">
+          <input type="password" class="form-control" id="password" v-model="password" v-on:keyup.enter="login">
         </div>
       </div>
 

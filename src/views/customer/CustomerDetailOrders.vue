@@ -88,6 +88,11 @@
               },
           }
       },
+      computed: {
+          token() {
+              return this.$store.state.token
+          }
+      },
       methods: {
           getCityStateZip(customer) {
               return customer.city + ", " + customer.state + " " + customer.zipcode;
@@ -95,8 +100,11 @@
       },
       // Lifecycle hooks
       created() {
-        // TODO: Implement API in Express server
-        axios.get('/customers/' + this.customerId)
+        axios.get('/customers/' + this.customerId, {
+            headers: {
+                'Authorization': 'Bearer ' + this.token
+            }
+        })
         .then(response => {
             //console.log(response.data);
             this.customer = response.data;
