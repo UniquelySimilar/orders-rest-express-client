@@ -60,7 +60,7 @@
 
     <delete-modal
       v-if="deleteModal"
-      :deleteCustomerName="deleteCustomerName"
+      :deleteMessage="deleteMessage"
       @closeDeleteModalEvent="closeDeleteModal"
       @deleteRecordEvent="deleteCustomer" />
 
@@ -123,6 +123,9 @@
         else {
           return "&#9662;"; // down arrow
         }
+      },
+      deleteMessage() {
+        return `Delete customer ${this.deleteCustomerName}?`;
       }
     },
     methods: {

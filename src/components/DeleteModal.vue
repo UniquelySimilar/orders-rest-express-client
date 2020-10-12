@@ -5,7 +5,7 @@
   <!-- Modal content -->
   <div class="modal-dialog-content">
     <div class="modal-dialog-header">
-      <h4>Delete Customer {{ deleteCustomerName }}?</h4>
+      <h4>{{ deleteMessage }}</h4>
     </div>
     <div class="modal-dialog-body">
     </div>
@@ -23,7 +23,7 @@
 <script>
   export default {
     props: {
-      deleteCustomerName: {
+      deleteMessage: {
         type: String,
         required: true
       }
