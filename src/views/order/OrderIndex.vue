@@ -28,20 +28,30 @@
                           <td>{{ formatDate(order.required_date) }}</td>
                           <td>{{ formatDate(order.shipped_date) }}</td>
                           <td><router-link :to="{ name: 'orderEdit', params: { customerId: customerId, orderId: order.id } }">Edit</router-link></td>
-                          <td><a href="#" v-on:click="deleteOrder(order.id)">Delete</a></td>
+                          <td><a href="#" v-on:click="displayDeleteModal(order.id)">Delete</a></td>
                       </tr>
                   </tbody>
               </table>
-          </div>
+
+              <delete-modal
+              v-if="deleteModal"
+              :deleteMessage="deleteMessage"
+              @closeDeleteModalEvent="closeDeleteModal"
+              @deleteRecordEvent="deleteOrder" />
+              </div>
       </div>
   </div>
 </template>
 
 <script>
   import { axios, processAjaxAuthError } from '../../global-vars.js'
+  import DeleteModal from '../../components/DeleteModal.vue'
 
   export default {
       name: 'OrderIndex',
+      components: {
+          DeleteModal
+      },
       props: {
           customerId: {
               type: Number,
@@ -54,7 +64,10 @@
       },
       data() {
           return {
-              orders: this.initialOrders
+              orders: this.initialOrders,
+              deleteOrderId: 0,
+              deleteModal: false,
+              deleteMessage: 'Delete this order?'
           }
       },
       computed: {
@@ -89,11 +102,15 @@
 
               return statusStr;
           },
-          deleteOrder(id) {
-              if (!confirm("Delete order")) {
-                  return;
-              }
-
+          displayDeleteModal(id) {
+              this.deleteOrderId = id;
+              this.deleteModal = true;
+          },
+          closeDeleteModal() {
+              this.deleteModal = false;
+          },
+          deleteOrder() {
+              let id = this.deleteOrderId;
               axios.delete('/orders/' + id, {
                   headers: {
                       'Authorization': 'Bearer ' + this.token
