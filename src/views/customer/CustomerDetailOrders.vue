@@ -106,18 +106,8 @@
             }
         })
         .then(response => {
-            // Process response differently depending on server
-            let resData = response.data;
-            if (Object.prototype.hasOwnProperty.call(resData, 'customer')) {
-                // Response from Rails server
-                this.customer = resData.customer;
-                this.customer.orders = resData.orders;
-                console.log(this.customer);
-            }
-            else {
-                // Response from Express server
-                this.customer = response.data;
-            }
+            //console.log(response.data);
+            this.customer = response.data;
             this.customer.id = parseInt(this.customer.id);
             this.customer.orders.forEach(order => {
                 order.id = parseInt(order.id);
