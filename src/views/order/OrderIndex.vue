@@ -121,6 +121,8 @@
                   this.orders = this.orders.filter( order => {
                       return order.id !== id;
                   });
+                  // Close delete modal
+                  this.deleteModal = false;
               })
               .catch(error => {
                   processAjaxAuthError(error, this.$router);
