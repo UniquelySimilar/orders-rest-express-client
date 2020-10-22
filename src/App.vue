@@ -2,6 +2,10 @@
   <div id="app" class="container-fluid">
     <div class="row" id="title">
         <span>Customer Orders Client Application for Express REST Service</span>
+        <select v-on:change="updateServer">
+          <option value="express">Express</option>
+          <option value="rails">Rails</option>
+        </select>
         <button class="btn btn-light btn-sm" v-on:click="logout">Log Out</button>
     </div>
     <router-view/>
@@ -14,6 +18,9 @@
       logout() {
         this.$store.commit('updateToken', { token: '' });
         this.$router.push("/login");
+      },
+      updateServer(event) {
+        this.$store.commit('updateServer', { server: event.target.value})
       }
     }
   }
@@ -43,6 +50,12 @@
   #title button {
     margin-left: auto;
     margin-right: 1em;
+  }
+
+  #title select {
+    font-size: 0.7em;
+    font-weight: normal;
+    margin-left: 1em;
   }
 
   .component-heading {
