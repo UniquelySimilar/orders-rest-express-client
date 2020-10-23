@@ -166,8 +166,19 @@
               }
               return btnLabel;
           },
+          isExpress() {
+              if (this.$store.state.server == 'express') {
+                  return true;
+              }
+              else {
+                  return false;
+              }
+          }
       },
       methods: {
+          // TODO:
+          // - Modify to handle server type
+          // - Possibly convert template error message HTML into a separate component
           getValidationError(fieldName) {
                 let returnValue;
 
@@ -199,13 +210,18 @@
                     // The request was made and the server responded with a status code that falls out of the range of 2xx
                     if (error.response.status == 400) {
                         // Validation errors
-                        if (error.response.data.errors) {    // Property containing array of error objects
-                            this.validationErrors = error.response.data.errors;
-                            console.log(this.validationErrors);
+                        if (this.isExpress) {
+                            if (error.response.data.errors) {    // Property containing array of error objects
+                                this.validationErrors = error.response.data.errors;
+                                console.log(this.validationErrors);
+                            }
+                            else {  // Single error message from server
+                                this.error400message = error.response.data;
+                                console.log(this.error400message);
+                            }
                         }
-                        else {  // Single error message from server
-                            this.error400message = error.response.data;
-                            console.log(this.error400message);
+                        else {
+                            // TODO: Rails
                         }
                     }
                     else if (error.response.status == 401) {
