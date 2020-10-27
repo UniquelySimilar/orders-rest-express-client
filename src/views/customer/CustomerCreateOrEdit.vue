@@ -177,7 +177,6 @@
             }
         },
         methods: {
-            // TODO: Possibly convert template error message HTML into a separate component
             getValidationError(fieldName) {
                 let returnValue;
 
