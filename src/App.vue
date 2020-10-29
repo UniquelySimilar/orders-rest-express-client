@@ -13,11 +13,28 @@
 </template>
 
 <script>
+  import { axios } from './global-vars.js'
+
   export default {
+    computed: {
+      token() {
+        return this.$store.state.token;
+      }
+    },
     methods: {
       logout() {
-        this.$store.commit('updateToken', { token: '' });
-        this.$router.push("/login");
+        axios.put('/logout', {}, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        })
+        .then()
+        .catch(error => console.error(error))
+        .finally(() => {
+          // Regardless of logout success or failure, clear token and redirect to login page
+          this.$store.commit('updateToken', { token: '' });
+          this.$router.push("/login");
+        });
       },
       updateServer(event) {
         this.$store.commit('updateServer', { server: event.target.value})
