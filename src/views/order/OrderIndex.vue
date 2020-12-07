@@ -19,6 +19,7 @@
                           <th>Shipped Date</th>
                           <th>&nbsp;</th>
                           <th>&nbsp;</th>
+                          <th>&nbsp;</th>
                       </tr>
                   </thead>
                   <tbody>
@@ -27,6 +28,7 @@
                           <td>{{ formatDate(order.order_date) }}</td>
                           <td>{{ formatDate(order.required_date) }}</td>
                           <td>{{ formatDate(order.shipped_date) }}</td>
+                          <td><router-link :to="{ name: 'orderDetailLineItems', params: { orderId: order.id } }">Line Items</router-link></td>
                           <td><router-link :to="{ name: 'orderEdit', params: { customerId: customerId, orderId: order.id } }">Edit</router-link></td>
                           <td><a href="#" v-on:click="displayDeleteModal(order.id)">Delete</a></td>
                       </tr>

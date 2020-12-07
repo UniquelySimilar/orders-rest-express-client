@@ -51,7 +51,14 @@ const routes = [
     name: 'orderEdit',
     component: () => import('../views/order/OrderCreateOrEdit.vue'),
     props: true
-  }
+  },
+  {
+    path: '/orders/:orderId',
+    name: 'orderDetailLineItems',
+    component: () => import('../views/order/OrderDetailLineItems.vue'),
+    props: true
+  },
+  // Line items
 
 ]
 
