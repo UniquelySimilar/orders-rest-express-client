@@ -108,4 +108,8 @@
     text-align: right;
   }
 
+  label {
+    font-weight: bold;
+  }
+
 </style>

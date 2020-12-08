@@ -4,13 +4,9 @@
           <span class="component-heading">Orders</span>
           <router-link class="btn btn-outline-dark" v-if="customerId" :to="{ name: 'orderCreate', params: { customerId: customerId } }">Create Order</router-link>
       </div>
-      <!--
-          TODO POSSIBILITY: Add filter by status
-      <span class="table-subtitle">Click a status to manage Line Items</span>
-      -->
       <div class="row" v-if="orders.length">
           <div class="col-md-8">
-              <table id="order-table" class="table table-striped table-bordered">
+              <table class="table table-striped table-bordered">
                   <thead>
                       <tr>
                           <th>Status</th>
@@ -22,6 +18,7 @@
                           <th>&nbsp;</th>
                       </tr>
                   </thead>
+                  <!-- TODO: formatDate should no longer be necessary -->
                   <tbody>
                       <tr v-for="order in orders" v-bind:key="order.id">
                           <td>{{ getOrderStatusStr(order.order_status) }}</td>
@@ -46,7 +43,7 @@
 </template>
 
 <script>
-  import { axios, processAjaxAuthError } from '../../global-vars.js'
+  import { axios, processAjaxAuthError, getOrderStatusStr } from '../../global-vars.js'
   import DeleteModal from '../../components/DeleteModal.vue'
 
   export default {
@@ -85,25 +82,6 @@
               let date = new Date(milliseconds);
               return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
           },
-          getOrderStatusStr(status) {
-              let statusStr = "Unknown";
-
-              switch(status) {
-                  case 1:
-                      statusStr = "Pending";
-                      break;
-                  case 2:
-                      statusStr = "Processing";
-                      break;
-                  case 3:
-                      statusStr = "Rejected";
-                      break;
-                  case 4:
-                      statusStr = "Completed";
-              }
-
-              return statusStr;
-          },
           displayDeleteModal(id) {
               this.deleteOrderId = id;
               this.deleteModal = true;
@@ -129,6 +107,10 @@
               .catch(error => {
                   processAjaxAuthError(error, this.$router);
               });
+          },
+          getOrderStatusStr(status) {
+              // Wrap imported function
+              return getOrderStatusStr(status);
           }
       }
   }

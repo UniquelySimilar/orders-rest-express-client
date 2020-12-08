@@ -53,9 +53,31 @@ const processAjaxAuthError = function(error, router) {
     }
 }
 
+const getOrderStatusStr = function(status) {
+    let statusStr = "Unknown";
+
+    switch(status) {
+        case 1:
+            statusStr = "Pending";
+            break;
+        case 2:
+            statusStr = "Processing";
+            break;
+        case 3:
+            statusStr = "Rejected";
+            break;
+        case 4:
+            statusStr = "Completed";
+    }
+
+    return statusStr;
+}
+
+
 export {
     axios,
     processAjaxLoginError,
     processAjaxAuthError,
+    getOrderStatusStr,
     stateList
 }

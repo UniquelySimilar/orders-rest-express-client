@@ -6,16 +6,18 @@ import CustomerIndex from '../views/customer/CustomerIndex.vue'
 Vue.use(VueRouter)
 
 const routes = [
+  // Home
+  {
+    path: '/',
+    redirect: { name: 'login' }
+  },
+  // Login
   {
     path: '/login',
     name: 'login',
     component: Login
   },
   // Customers
-  {
-    path: '/',
-    redirect: { name: 'customerIndex' }
-  },
   {
     path: '/customers',
     name: 'customerIndex',

@@ -223,6 +223,7 @@
                 })
                 .then( response => {
                     this.order = response.data;
+                    // Remove time suffix from dates
                     this.order.order_date = this.order.order_date.substring(0,10);
                     this.order.required_date = this.order.required_date.substring(0,10);
                     if (this.order.shipped_date) {   // NOT null from database/web service
