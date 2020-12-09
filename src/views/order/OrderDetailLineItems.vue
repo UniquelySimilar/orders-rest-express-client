@@ -33,7 +33,7 @@
       </div>
     </div>
     <hr>
-    <line-item-index v-bind:orderId="order.id" v-bind:lineItems="order.line_items" />
+    <line-item-index v-bind:orderId="order.id" v-bind:initialLineItems="order.line_items" />
     <hr>
     <router-link class="btn btn-outline-dark" :to="{ name: 'customerDetailOrders', params: { customerId: order.customer_id } }">Back</router-link>
   </div>

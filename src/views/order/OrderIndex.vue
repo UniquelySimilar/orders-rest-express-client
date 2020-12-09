@@ -27,14 +27,14 @@
                           <td>{{ formatDate(order.shipped_date) }}</td>
                           <td><router-link :to="{ name: 'orderDetailLineItems', params: { orderId: order.id } }">Line Items</router-link></td>
                           <td><router-link :to="{ name: 'orderEdit', params: { customerId: customerId, orderId: order.id } }">Edit</router-link></td>
-                          <td><a href="#" v-on:click="displayDeleteModal(order.id)">Delete</a></td>
+                          <td><a href="#" v-on:click="openDeleteModal(order.id)">Delete</a></td>
                       </tr>
                   </tbody>
               </table>
 
               <delete-modal
-              v-if="deleteModal"
-              :deleteMessage="deleteMessage"
+              v-if="deleteModalOpen"
+              deleteMessage="Delete this order?"
               @closeDeleteModalEvent="closeDeleteModal"
               @deleteRecordEvent="deleteOrder" />
               </div>
@@ -65,8 +65,7 @@
           return {
               orders: this.initialOrders,
               deleteOrderId: 0,
-              deleteModal: false,
-              deleteMessage: 'Delete this order?'
+              deleteModalOpen: false
           }
       },
       computed: {
@@ -82,12 +81,12 @@
               let date = new Date(milliseconds);
               return (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
           },
-          displayDeleteModal(id) {
+          openDeleteModal(id) {
               this.deleteOrderId = id;
-              this.deleteModal = true;
+              this.deleteModalOpen = true;
           },
           closeDeleteModal() {
-              this.deleteModal = false;
+              this.deleteModalOpen = false;
           },
           deleteOrder() {
               let id = this.deleteOrderId;
@@ -101,12 +100,11 @@
                   this.orders = this.orders.filter( order => {
                       return order.id !== id;
                   });
-                  // Close delete modal
-                  this.deleteModal = false;
               })
               .catch(error => {
                   processAjaxAuthError(error, this.$router);
-              });
+              })
+              .finally( () => this.closeDeleteModal() );
           },
           getOrderStatusStr(status) {
               // Wrap imported function
