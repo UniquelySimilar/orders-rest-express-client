@@ -19,7 +19,9 @@
               <td>PLACEHOLDER</td>
               <td>{{ lineItem.unit_price }}</td>
               <td>{{ lineItem.quantity }}</td>
-              <td>EDIT</td>
+              <td>
+                <router-link :to="{ name: 'lineItemEdit', params: { orderId: lineItem.order_id, lineItemId: lineItem.id } }">Edit</router-link>
+              </td>
               <td>
                 <a href="#" @click.prevent="openDeleteModal(lineItem.id)">Delete</a>
               </td>

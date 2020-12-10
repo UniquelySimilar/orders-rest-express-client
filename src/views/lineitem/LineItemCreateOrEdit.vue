@@ -28,7 +28,7 @@
       <div class="form-group row">
         <div class="col-md-offset-4 col-md-2">
           <button type="button" class="btn btn-outline-dark" v-on:click="submitForm">{{ submitBtnLabel }}</button>
-          <router-link class="btn btn-outline-dark" :to="{ name: 'orderDetailLineItems', params: {orderId: orderId} }">Back</router-link>
+          <router-link class="btn btn-outline-dark" :to="{ name: 'orderDetailLineItems', params: {orderId: orderId} }">Cancel</router-link>
         </div>
       </div>
     </form>
@@ -72,6 +72,17 @@
       }
     },
     methods: {
+      getLineItem() {
+        axios.get('/lineitems/' + this.lineItemId, {
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        })
+        .then( response => {
+          this.lineItem = response.data;
+        })
+        .catch(error => processAjaxAuthError(error, this.$router));
+      },
       submitForm() {
         let id = this.lineItemId;
         axios({
@@ -95,6 +106,11 @@
       getValidationError(fieldName) {
         // Wrap imported function
         return getValidationError(fieldName, this.validationErrors);
+      }
+    },
+    created() {
+      if (this.lineItemId) {
+        this.getLineItem();
       }
     }
   }
