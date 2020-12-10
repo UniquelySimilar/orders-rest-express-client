@@ -2,7 +2,7 @@
   <div class="line-item-index">
     <div class="table-title">
       <span class="component-heading">Line Items</span>
-      <router-link class="btn btn-outline-dark" v-if="orderId" :to="{ name: 'customerIndex' }">Create Line Item</router-link>
+      <router-link class="btn btn-outline-dark" v-if="orderId" :to="{ name: 'lineItemCreate', params: { orderId: orderId } }">Create Line Item</router-link>
     </div>
     <div class="row" v-if="lineItems.length">
       <div class="col-md-8">

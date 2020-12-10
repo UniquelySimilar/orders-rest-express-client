@@ -69,8 +69,8 @@
 </template>
 
 <script>
-    import { axios, processAjaxAuthError } from '../../global-vars.js'
-    import Datepicker from '../../components/Datepicker.vue'
+    import { axios, processAjaxAuthError } from '@/global-vars.js'
+    import Datepicker from '@/components/Datepicker.vue'
 
     export default {
         name: "OrderCreateOrEdit",

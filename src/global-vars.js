@@ -53,6 +53,31 @@ const processAjaxAuthError = function(error, router) {
     }
 }
 
+const processValidationErrors = function(error) {
+    let retVal = [];
+    if (error.response) {
+        if (error.response.status == 400) {
+            retVal = error.response.data.errors;
+        }
+    }
+
+    return retVal;
+}
+
+const getValidationError = function(fieldName, validationErrors) {
+    let returnValue;
+
+    let foundElement = validationErrors.find(function (element) {
+        return element.param === fieldName;
+    });
+
+    if (foundElement !== undefined) {
+        returnValue = foundElement.msg;
+    }
+
+    return returnValue;
+}
+
 const getOrderStatusStr = function(status) {
     let statusStr = "Unknown";
 
@@ -78,6 +103,8 @@ export {
     axios,
     processAjaxLoginError,
     processAjaxAuthError,
+    processValidationErrors,
+    getValidationError,
     getOrderStatusStr,
     stateList
 }

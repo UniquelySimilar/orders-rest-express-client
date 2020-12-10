@@ -27,40 +27,46 @@ const routes = [
     path: '/customers/:customerId',
     name: 'customerDetailOrders',
     // route level code-splitting (see documentation)
-    component: () => import('../views/customer/CustomerDetailOrders.vue'),
+    component: () => import('@/views/customer/CustomerDetailOrders.vue'),
     props: true
   },
   {
     path: '/customers/create',
     name: 'customerCreate',
-    component: () => import('../views/customer/CustomerCreateOrEdit.vue')
+    component: () => import('@/views/customer/CustomerCreateOrEdit.vue')
   },
   {
     path: '/customers/:customerId/edit',
     name: 'customerEdit',
-    component: () => import('../views/customer/CustomerCreateOrEdit.vue'),
+    component: () => import('@/views/customer/CustomerCreateOrEdit.vue'),
     props: true
   },
   // Orders
   {
     path: '/customers/:customerId/orders/create',
     name: 'orderCreate',
-    component: () => import('../views/order/OrderCreateOrEdit.vue'),
+    component: () => import('@/views/order/OrderCreateOrEdit.vue'),
     props: true
   },
   {
     path: '/customers/:customerId/orders/:orderId/edit',
     name: 'orderEdit',
-    component: () => import('../views/order/OrderCreateOrEdit.vue'),
+    component: () => import('@/views/order/OrderCreateOrEdit.vue'),
     props: true
   },
   {
     path: '/orders/:orderId',
     name: 'orderDetailLineItems',
-    component: () => import('../views/order/OrderDetailLineItems.vue'),
+    component: () => import('@/views/order/OrderDetailLineItems.vue'),
     props: true
   },
   // Line items
+  {
+    path: '/orders/:orderId/lineitems/create',
+    name: 'lineItemCreate',
+    component: () => import('@/views/lineitem/LineItemCreateOrEdit.vue'),
+    props: true
+  }
 
 ]
 

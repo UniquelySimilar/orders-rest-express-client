@@ -1,19 +1,107 @@
 <template>
-  <div class="line-item-create-or-edit">
-    <h2>Line Item Create or Edit</h2>
+  <div class="lineitem-create-edit">
+    <span class="component-heading">{{ pageHeading }}</span>
+    <hr>
+    <form>
+      <div class="form-group row">
+        <label for="unitPrice" class="col-md-offset-2 col-md-2 col-form-label">Unit Price</label>
+        <div class="col-md-3">
+          <input type="input" class="form-control" id="unitPrice" v-model="lineItem.unit_price">
+        </div>
+        <div class="col-md-4 error-msg">
+          <span>*&nbsp;</span>
+          <span>{{ getValidationError('unit_price', validationErrors) }}</span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="quantity" class="col-md-offst-2 col-md-2 col-form-label">Quantity</label>
+        <div class="col-md-3">
+          <input type="input" class="form-control" id="quantity" v-model="lineItem.quantity">
+        </div>
+        <div class="col-md-4 error-msg">
+          <span>*&nbsp;</span>
+          <span>{{ getValidationError('quantity', validationErrors) }}</span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-offset-4 col-md-2">
+          <button type="button" class="btn btn-outline-dark" v-on:click="submitForm">{{ submitBtnLabel }}</button>
+          <router-link class="btn btn-outline-dark" :to="{ name: 'orderDetailLineItems', params: {orderId: orderId} }">Back</router-link>
+        </div>
+      </div>
+    </form>
   </div>
 </template>
 
 <script>
+  import { axios, processAjaxAuthError, processValidationErrors, getValidationError } from '@/global-vars.js';
+
   export default {
     data() {
       return {
-        
+        lineItem: {
+          id: this.lineItemId,
+          order_id: this.orderId,
+          unit_price: 0.01,
+          quantity: 0
+        },
+        validationErrors: []
+      }
+    },
+    props: {
+      orderId: {
+        type: Number,
+        required: true
+      },
+      lineItemId: {
+        type: Number,
+        required: false
+      }
+    },
+    computed: {
+      pageHeading() {
+        return this.lineItemId ? 'Edit Line Item' : 'Create Line Item';
+      },
+      submitBtnLabel() {
+        return this.lineItemId ? 'Update' : 'Create'
+      },
+      token() {
+        return this.$store.state.token;
+      }
+    },
+    methods: {
+      submitForm() {
+        let id = this.lineItemId;
+        axios({
+          method: id ? 'put' : 'post',
+          url:    id ? '/lineitems/' + id : '/lineitems',
+          data:   this.lineItem,
+          headers: {
+            'Authorization': 'Bearer ' + this.token
+          }
+        })
+        .then( () => {
+          this.$router.push({ name: 'orderDetailLineItems', params: {orderId: this.orderId} })
+        })
+        .catch( (error) => {
+          this.validationErrors = processValidationErrors(error);
+          if (this.validationErrors.length === 0) {
+            processAjaxAuthError(error, this.$router);
+          }
+        } );
+      },
+      getValidationError(fieldName, validationErrors) {
+        // Wrap imported function
+        return getValidationError(fieldName, validationErrors);
       }
     }
   }
 </script>
 
 <style scoped>
-  
+  label {
+      text-align: right;
+  }
 </style>

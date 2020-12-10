@@ -97,7 +97,7 @@
             </div>
 
             <div class="form-group row" v-if="error400message">
-                <label for="email" class="col-md-offset-2 col-md-2 col-form-label">Error Message</label>
+                <label class="col-md-offset-2 col-md-2 col-form-label">Error Message</label>
                 <div class="col-md-4 error-msg">
                     <span>{{ error400message }}</span>
                 </div>
@@ -116,8 +116,8 @@
 </template>
 
 <script>
-    import { axios, processAjaxAuthError, stateList } from '../../global-vars.js'
-    import DigitsInput from '../../components/DigitsInput.vue'
+    import { axios, processAjaxAuthError, stateList } from '@/global-vars.js'
+    import DigitsInput from '@/components/DigitsInput.vue'
 
     export default {
         name: "CustomerCreateOrEdit",
@@ -161,7 +161,7 @@
                 return heading;
             },
             submitBtnLabel() {
-                let btnLabel = "Save"
+                let btnLabel = "Create"
                 if (this.customerId) {
                     btnLabel = "Update"
                 }
