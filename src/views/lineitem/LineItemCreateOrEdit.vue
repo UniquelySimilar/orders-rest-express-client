@@ -10,7 +10,7 @@
         </div>
         <div class="col-md-4 error-msg">
           <span>*&nbsp;</span>
-          <span>{{ getValidationError('unit_price', validationErrors) }}</span>
+          <span>{{ getValidationError('unit_price') }}</span>
         </div>
       </div>
 
@@ -21,7 +21,7 @@
         </div>
         <div class="col-md-4 error-msg">
           <span>*&nbsp;</span>
-          <span>{{ getValidationError('quantity', validationErrors) }}</span>
+          <span>{{ getValidationError('quantity') }}</span>
         </div>
       </div>
 
@@ -90,11 +90,11 @@
           if (this.validationErrors.length === 0) {
             processAjaxAuthError(error, this.$router);
           }
-        } );
+        });
       },
-      getValidationError(fieldName, validationErrors) {
+      getValidationError(fieldName) {
         // Wrap imported function
-        return getValidationError(fieldName, validationErrors);
+        return getValidationError(fieldName, this.validationErrors);
       }
     }
   }

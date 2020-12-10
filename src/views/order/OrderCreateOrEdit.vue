@@ -69,7 +69,7 @@
 </template>
 
 <script>
-    import { axios, processAjaxAuthError } from '@/global-vars.js'
+    import { axios, processAjaxAuthError, processValidationErrors, getValidationError } from '@/global-vars.js'
     import Datepicker from '@/components/Datepicker.vue'
 
     export default {
@@ -136,17 +136,8 @@
                 return currentDate;
             },
             getValidationError(fieldName) {
-                let returnValue;
-
-                let foundElement = this.validationErrors.find(function (element) {
-                    return element.param === fieldName;
-                });
-
-                if (foundElement !== undefined) {
-                    returnValue = foundElement.msg;
-                }
-
-                return returnValue;
+                // Wrap imported function
+                return getValidationError(fieldName, this.validationErrors);
             },
             updateDate(payload) {
                 //console.log("updateDate payload.dtValue: " + payload.dtValue);
@@ -185,30 +176,9 @@
                     this.$router.push({ name: 'customerDetailOrders', params: { id: this.customerId} });
                 })
                 .catch(error => {
-                    if (error.response) {
-                        if (error.response.status == 400) {
-                            // Validation errors
-                            if (error.response.data.errors) {    // Property containing array of error objects
-                                this.validationErrors = error.response.data.errors;
-                                console.log(this.validationErrors);
-                            }
-                            else {  // Single error message from server
-                                this.error400message = error.response.data;
-                                console.log(this.error400message);
-                            }
-                        }
-                        else if (error.response.status == 401) {
-                            console.log("401 error so redirect to login");
-                            this.$router.push("/login");
-                        }
-                        else {
-                            console.error("Response contains error code " + error.response.status);
-                        }
-                    } else if (error.request) {
-                        console.error("No response received so logging request");
-                        console.error(error.request);
-                    } else {
-                        console.error("Problem with request: " + error.message);
+                    this.validationErrors = processValidationErrors(error);
+                    if (this.validationErrors.length === 0) {
+                        processAjaxAuthError(error, this.$router);
                     }
                 });
             },
