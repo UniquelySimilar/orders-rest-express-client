@@ -74,10 +74,6 @@
         })
         .then( response => {
           this.order = response.data;
-          this.order.id = parseInt(this.order.id);
-          this.order.line_items.forEach( line_item => {
-            line_item.id = parseInt(line_item.id);
-          })
           // Remove time suffix from dates
           this.order.order_date = this.order.order_date.substring(0,10);
           this.order.required_date = this.order.required_date.substring(0,10);
