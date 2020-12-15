@@ -6,7 +6,9 @@
       <div class="form-group row">
         <label for="unitPrice" class="col-md-offset-2 col-md-2 col-form-label">Unit Price</label>
         <div class="col-md-3">
-          <input type="input" class="form-control" id="unitPrice" v-model="lineItem.unit_price">
+          <input type="input" class="form-control" id="unitPrice"
+           :value="unitPriceToFixed"
+           @change="updateUnitPrice">
         </div>
         <div class="col-md-4 error-msg">
           <span>*&nbsp;</span>
@@ -69,9 +71,16 @@
       },
       token() {
         return this.$store.state.token;
+      },
+      unitPriceToFixed() {
+        return this.lineItem.unit_price.toFixed(2);
       }
     },
     methods: {
+      updateUnitPrice(event) {
+        // Convert value back to float so computed unitPriceToFixed works
+        this.lineItem.unit_price = parseFloat(event.target.value);
+      },
       getLineItem() {
         axios.get('/lineitems/' + this.lineItemId, {
           headers: {

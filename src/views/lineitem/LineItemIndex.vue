@@ -17,7 +17,7 @@
           <tbody>
             <tr v-for="lineItem in lineItems" v-bind:key="lineItem.id">
               <td>PLACEHOLDER</td>
-              <td>{{ lineItem.unit_price }}</td>
+              <td>{{ lineItem.unit_price.toFixed(2) }}</td>
               <td>{{ lineItem.quantity }}</td>
               <td>
                 <router-link :to="{ name: 'lineItemEdit', params: { orderId: lineItem.order_id, lineItemId: lineItem.id } }">Edit</router-link>
